@@ -12,7 +12,7 @@ class BarcodeReaderAPI(View):
     @staticmethod
     def post(request):
         try:
-            data = request.POST.get('barcode')
+            data = request.POST.get('barcode_base64')
             img_format, img_str = data.split(';base64,')
             image = ContentFile(base64.b64decode(img_str))
             image = image_uploader(image)
