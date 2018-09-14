@@ -7,13 +7,18 @@ from django.conf import settings
 from barcode_app.services import image_uploader
 from product.models import Product
 from product.serializers import ProductSerializer
+import base64
+from django.core.files.base import ContentFile
 
 
 class BarcodeReaderAPI(View):
     @staticmethod
     def post(request):
         try:
-            image = image_uploader(request.FILES.get('barcode'))
+            data = request.POST.get('barcode')
+            img_format, img_str = data.split(';base64,')
+            image = ContentFile(base64.b64decode(img_str))
+            image = image_uploader(image)
             codes = zbarlight.scan_codes(['ean13'], image)
 
             if codes is None:

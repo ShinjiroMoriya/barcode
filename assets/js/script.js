@@ -134,10 +134,10 @@ if ($('#input_image_add_button').length != 0) {
 
                 var displaySrc = ctx.canvas.toDataURL('image/jpeg', .9);
 
-                var blob = dataURLtoBlob(displaySrc);
+                // var blob = dataURLtoBlob(displaySrc);
 
                 var fd = new FormData();
-                fd.append('barcode', blob);
+                fd.append('barcode', displaySrc);
 
                 $.ajax({
                     type: 'POST',
