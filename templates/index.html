@@ -4,12 +4,12 @@
 <div class="container">
     <main class="content">
         <h2 class="page_title">バーコード読取</h2>
-        <input type="button" style="margin: 0 auto 20px auto;" id="input_image_add_button" value="バーコードを読み取る" class="button_1">
+        <input style="margin: 0 0 20px 0" type="button" id="input_image_add_button" value="バーコードを読み取る" class="button_1">
         <div class="barcode_status"></div>
         <ul class="item_list" id="product_list"></ul>
-        <input name="barcode" type="file" class="upload" id="upload" accept="image/*; capture=camera">
-        <canvas id="canvas" class="canvas" width="0" height="0"></canvas>
-        <input type="button" style="display: none;" id="do_upload" value="送信" class="button_1">
+        <form id="image_upload" method="POST" enctype="multipart/form-data">
+            <input name="barcode" type="file" class="upload" id="upload" accept="image/*; capture=camera">
+        </form>
     </main>
 </div>
 {% endblock %}
