@@ -46,8 +46,8 @@ if ($('#input_image_add_button').length != 0) {
 
         $('#loading').show();
 
-        var maxWidth = 800;
-        var maxHeight = 800;
+        var maxWidth = 500;
+        var maxHeight = 500;
         var file = event.target.files[0];
         if (!file.type.match(/^image\/(png|jpeg|gif)$/)) return;
 
