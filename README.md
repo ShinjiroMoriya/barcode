@@ -15,5 +15,5 @@
 ## Heroku Config Vars
 - SECRET_KEY": "Random String"
 ## APT Packages
--libzbar0
--libzbar-dev
+- libzbar0
+- libzbar-dev
