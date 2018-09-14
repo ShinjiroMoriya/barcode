@@ -39,139 +39,206 @@ $('.header_menu_button').on('click', function() {
 
 
 if ($('#input_image_add_button').length != 0) {
+
+    var blob = null;
+    var file = null; // 選択されるファイル
+    var blob = null; // 画像(BLOBデータ)
+    var THUMBNAIL_WIDTH = 500; // 画像リサイズ後の横の長さの最大値
+    var THUMBNAIL_HEIGHT = 500; // 画像リサイズ後の縦の長さの最大値
+
     $('#input_image_add_button').on('click', function() {
         $('#upload').click();
     });
-    $('#upload').off('change').on('change', function(event) {
+    $('#upload').on('change', function(event) {
 
         $('#loading').show();
 
-        var maxWidth = 500;
-        var maxHeight = 500;
-        var file = event.target.files[0];
-        if (!file.type.match(/^image\/(png|jpeg|gif)$/)) return;
+        // var maxWidth = 500;
+        // var maxHeight = 500;
+        // var file = event.target.files[0];
+        // if (!file.type.match(/^image\/(png|jpeg|gif)$/)) return;
 
-        var img = new Image();
+        // var img = new Image();
+        // var reader = new FileReader();
+
+        // reader.onload = function(e) {
+
+        //     var data = e.target.result;
+
+        //     img.onload = function() {
+
+        //         var iw = img.naturalWidth, ih = img.naturalHeight;
+        //         var width = iw, height = ih;
+
+        //         var orientation;
+
+        //         // JPEGの場合には、EXIFからOrientation（回転）情報を取得
+        //         if (data.split(',')[0].match('jpeg')) {
+        //             orientation = getOrientation(data);
+        //         }
+        //         // JPEG以外や、JPEGでもEXIFが無い場合などには、標準の値に設定
+        //         orientation = orientation || 1;
+
+        //         // ９０度回転など、縦横が入れ替わる場合には事前に最大幅、高さを入れ替えておく
+        //         if (orientation > 4) {
+        //             var tmpMaxWidth = maxWidth;
+        //             maxWidth = maxHeight;
+        //             maxHeight = tmpMaxWidth;
+        //         }
+
+        //         if(width > maxWidth || height > maxHeight) {
+        //             var ratio = width/maxWidth;
+        //             if(ratio <= height/maxHeight) {
+        //                 ratio = height/maxHeight;
+        //             }
+        //             width = Math.floor(img.width/ratio);
+        //             height = Math.floor(img.height/ratio);
+        //         }
+
+        //         var canvas = document.createElement('canvas');
+        //         var ctx = canvas.getContext('2d');
+        //         ctx.save();
+
+        //         // EXIFのOrientation情報からCanvasを回転させておく
+        //         transformCoordinate(canvas, width, height, orientation);
+
+        //         // iPhoneのサブサンプリング問題の回避
+        //         // see http://d.hatena.ne.jp/shinichitomita/20120927/1348726674
+        //         var subsampled = detectSubsampling(img);
+        //         if (subsampled) {
+        //             iw /= 2;
+        //             ih /= 2;
+        //         }
+        //         var d = 1024; // size of tiling canvas
+        //         var tmpCanvas = document.createElement('canvas');
+        //         tmpCanvas.width = tmpCanvas.height = d;
+        //         var tmpCtx = tmpCanvas.getContext('2d');
+        //         var vertSquashRatio = detectVerticalSquash(img, iw, ih);
+        //         var dw = Math.ceil(d * width / iw);
+        //         var dh = Math.ceil(d * height / ih / vertSquashRatio);
+        //         var sy = 0;
+        //         var dy = 0;
+        //         while (sy < ih) {
+        //             var sx = 0;
+        //             var dx = 0;
+        //             while (sx < iw) {
+        //                 tmpCtx.clearRect(0, 0, d, d);
+        //                 tmpCtx.drawImage(img, -sx, -sy);
+        //                 // 何度もImageDataオブジェクトとCanvasの変換を行ってるけど、
+        //                 // Orientation関連で仕方ない
+        //                 // 本当はputImageDataであれば良いけどOrientation効かない
+        //                 var imageData = tmpCtx.getImageData(0, 0, d, d);
+        //                 var resampled = resample_hermite(imageData, d, d, dw, dh);
+        //                 ctx.drawImage(resampled, 0, 0, dw, dh, dx, dy, dw, dh);
+        //                 sx += d;
+        //                 dx += dw;
+        //             }
+        //             sy += d;
+        //             dy += dh;
+        //         }
+        //         ctx.restore();
+        //         tmpCanvas = tmpCtx = null;
+
+        //         var displaySrc = ctx.canvas.toDataURL('image/jpeg', .9);
+        //         var blob = dataURLtoBlob(displaySrc);
+        //     }
+        //     img.src = data;
+
+        // }
+        // reader.readAsDataURL(file);
+
+        file = $(this).prop('files')[0];
+        // 選択されたファイルが画像かどうか判定
+        if (file.type != 'image/jpeg' && file.type != 'image/png') {
+          // 画像でない場合は終了
+          file = null;
+          blob = null;
+          return;
+        }
+
+        // 画像をリサイズする
+        var image = new Image();
         var reader = new FileReader();
-
         reader.onload = function(e) {
-
-            var data = e.target.result;
-
-            img.onload = function() {
-
-                var iw = img.naturalWidth, ih = img.naturalHeight;
-                var width = iw, height = ih;
-
-                var orientation;
-
-                // JPEGの場合には、EXIFからOrientation（回転）情報を取得
-                if (data.split(',')[0].match('jpeg')) {
-                    orientation = getOrientation(data);
-                }
-                // JPEG以外や、JPEGでもEXIFが無い場合などには、標準の値に設定
-                orientation = orientation || 1;
-
-                // ９０度回転など、縦横が入れ替わる場合には事前に最大幅、高さを入れ替えておく
-                if (orientation > 4) {
-                    var tmpMaxWidth = maxWidth;
-                    maxWidth = maxHeight;
-                    maxHeight = tmpMaxWidth;
-                }
-
-                if(width > maxWidth || height > maxHeight) {
-                    var ratio = width/maxWidth;
-                    if(ratio <= height/maxHeight) {
-                        ratio = height/maxHeight;
-                    }
-                    width = Math.floor(img.width/ratio);
-                    height = Math.floor(img.height/ratio);
-                }
-
-                var canvas = document.createElement('canvas');
-                var ctx = canvas.getContext('2d');
-                ctx.save();
-
-                // EXIFのOrientation情報からCanvasを回転させておく
-                transformCoordinate(canvas, width, height, orientation);
-
-                // iPhoneのサブサンプリング問題の回避
-                // see http://d.hatena.ne.jp/shinichitomita/20120927/1348726674
-                var subsampled = detectSubsampling(img);
-                if (subsampled) {
-                    iw /= 2;
-                    ih /= 2;
-                }
-                var d = 1024; // size of tiling canvas
-                var tmpCanvas = document.createElement('canvas');
-                tmpCanvas.width = tmpCanvas.height = d;
-                var tmpCtx = tmpCanvas.getContext('2d');
-                var vertSquashRatio = detectVerticalSquash(img, iw, ih);
-                var dw = Math.ceil(d * width / iw);
-                var dh = Math.ceil(d * height / ih / vertSquashRatio);
-                var sy = 0;
-                var dy = 0;
-                while (sy < ih) {
-                    var sx = 0;
-                    var dx = 0;
-                    while (sx < iw) {
-                        tmpCtx.clearRect(0, 0, d, d);
-                        tmpCtx.drawImage(img, -sx, -sy);
-                        // 何度もImageDataオブジェクトとCanvasの変換を行ってるけど、
-                        // Orientation関連で仕方ない
-                        // 本当はputImageDataであれば良いけどOrientation効かない
-                        var imageData = tmpCtx.getImageData(0, 0, d, d);
-                        var resampled = resample_hermite(imageData, d, d, dw, dh);
-                        ctx.drawImage(resampled, 0, 0, dw, dh, dx, dy, dw, dh);
-                        sx += d;
-                        dx += dw;
-                    }
-                    sy += d;
-                    dy += dh;
-                }
-                ctx.restore();
-                tmpCanvas = tmpCtx = null;
-
-                var displaySrc = ctx.canvas.toDataURL('image/jpeg', .9);
-
-                var blob = dataURLtoBlob(displaySrc);
-                var fd = new FormData();
-                fd.append('barcode', blob);
-                $.ajax({
-                    type: 'POST',
-                    url: '/api/barcode',
-                    cache: false,
-                    data: fd,
-                    timeout: 15000,
-                    processData: false,
-                    contentType: false
-                }).done(function(data) {
-                    $.each(data.products, function(i, product) {
-                        $('#product_list').append('<li>' + '<strong>' + product.product_name + '</strong><br>' + product.brand + '<br>' + product.model_number + '<br>' + product.category.name + '<br>' + product.jan_code + '</li>');
-                    });
-
-                }).fail(function(jqXHR) {
-                    if (jqXHR.status !== 404) {
-                        $('.header_status_text').text('通信エラー');
-                        $('.header_status').addClass('_show _error');
-                    } else {
-                        $('.barcode_status').append('<p>' + jqXHR.responseJSON.message + '</p>');
-                    }
-
-                }).always(function() {
-                    $('input[name="barcode"]').val('');
-                    $('#loading').hide();
-                    setTimeout(function() {
-                        $('.barcode_status p').remove();
-                        $('.header_status_text').text('');
-                        $('.header_status').removeClass('_show _success _error');
-                    }, 2000);
-                });
+          image.onload = function() {
+            var width, height;
+            if(image.width > image.height){
+                // 横長の画像は横のサイズを指定値にあわせる
+                var ratio = image.height/image.width;
+                width = THUMBNAIL_WIDTH;
+                height = THUMBNAIL_WIDTH * ratio;
+            } else {
+                // 縦長の画像は縦のサイズを指定値にあわせる
+                var ratio = image.width/image.height;
+                width = THUMBNAIL_HEIGHT * ratio;
+                height = THUMBNAIL_HEIGHT;
             }
-            img.src = data;
+            // サムネ描画用canvasのサイズを上で算出した値に変更
+            var canvas = $('#canvas').attr('width', width).attr('height', height);
+            var ctx = canvas[0].getContext('2d');
+            // canvasに既に描画されている画像をクリア
+            ctx.clearRect(0, 0, width, height);
+            // canvasにサムネイルを描画
+            ctx.drawImage(image, 0, 0, image.width, image.height, 0, 0, width, height);
 
+            // canvasからbase64画像データを取得
+            var base64 = canvas.get(0).toDataURL('image/jpeg');
+            // base64からBlobデータを作成
+            var barr, bin, i, len;
+            bin = atob(base64.split('base64,')[1]);
+            len = bin.length;
+            barr = new Uint8Array(len);
+            i = 0;
+            while (i < len) {
+              barr[i] = bin.charCodeAt(i);
+              i++;
+            }
+            blob = new Blob([barr], {type: 'image/jpeg'});
+            $("#do_upload").show();
+            $('#loading').hide();
+          }
+          image.src = e.target.result;
         }
         reader.readAsDataURL(file);
+    });
+
+    $("#do_upload").on('click', function() {
+        $('#loading').show();
+
+        var fd = new FormData();
+        fd.append('barcode', blob);
+        $.ajax({
+            type: 'POST',
+            url: '/api/barcode',
+            cache: false,
+            data: fd,
+            timeout: 15000,
+            processData: false,
+            contentType: false
+        }).done(function(data) {
+            $('#canvas').attr('width', 0).attr('height', 0);
+            $.each(data.products, function(i, product) {
+                $('#product_list').append('<li>' + '<strong>' + product.product_name + '</strong><br>' + product.brand + '<br>' + product.model_number + '<br>' + product.category.name + '<br>' + product.jan_code + '</li>');
+            });
+
+        }).fail(function(jqXHR) {
+            if (jqXHR.status !== 404) {
+                $('.header_status_text').text('通信エラー');
+                $('.header_status').addClass('_show _error');
+            } else {
+                $('.barcode_status').append('<p>' + jqXHR.responseJSON.message + '</p>');
+            }
+
+        }).always(function() {
+            $('input[name="barcode"]').val('');
+            $('#loading').hide();
+            $("#do_upload").hide();
+            setTimeout(function() {
+                $('.barcode_status p').remove();
+                $('.header_status_text').text('');
+                $('.header_status').removeClass('_show _success _error');
+            }, 2000);
+        });
     });
 }
 
