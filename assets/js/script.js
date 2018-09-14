@@ -203,7 +203,10 @@ if ($('#input_image_add_button').length != 0) {
     });
 
     $("#do_upload").on('click', function() {
+
         $('#loading').show();
+
+        alert('test');
 
         var fd = new FormData();
         fd.append('barcode', blob);
@@ -216,7 +219,6 @@ if ($('#input_image_add_button').length != 0) {
             processData: false,
             contentType: false
         }).done(function(data) {
-            $('#canvas').attr('width', 0).attr('height', 0);
             $.each(data.products, function(i, product) {
                 $('#product_list').append('<li>' + '<strong>' + product.product_name + '</strong><br>' + product.brand + '<br>' + product.model_number + '<br>' + product.category.name + '<br>' + product.jan_code + '</li>');
             });
@@ -230,6 +232,7 @@ if ($('#input_image_add_button').length != 0) {
             }
 
         }).always(function() {
+            $('#canvas').attr('width', 0).attr('height', 0);
             $('input[name="barcode"]').val('');
             $('#loading').hide();
             $("#do_upload").hide();
