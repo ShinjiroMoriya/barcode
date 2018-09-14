@@ -1,9 +1,6 @@
-import tempfile
 from django.views import View
 from django.http import JsonResponse
 import zbarlight
-from PIL import Image
-from django.conf import settings
 from barcode_app.services import image_uploader
 from product.models import Product
 from product.serializers import ProductSerializer

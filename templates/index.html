@@ -6,9 +6,16 @@
         <h2 class="page_title">バーコード読取</h2>
         <input style="margin: 0 0 20px 0" type="button" id="input_image_add_button" value="バーコードを読み取る" class="button_1">
         <div class="barcode_status"></div>
-        <ul class="item_list" id="product_list"></ul>
-        <form id="image_upload" method="POST" enctype="multipart/form-data">
-            <input name="barcode" type="file" class="upload" id="upload" accept="image/*; capture=camera">
+        <ul class="item_list" id="product_list">
+            {%- for product in products %}
+            <li><strong>{{ product.product_name }}</strong><br>{{ product.brand }}<br>{{ product.model_number }}<br>{{ product.category.name }}<br>{{ product.jan_code }}</li>
+            {%- endfor %}
+        </ul>
+        <input name="barcode" type="file" class="upload" id="upload" accept="image/*; capture=camera">
+        <form id="image_upload" method="POST">
+            <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+            <input type="hidden" id="barcode_base64" name="barcode_base64">
+            <input style="margin: 0 0 0 0;" type="submit" value="送信" class="button_1">
         </form>
     </main>
 </div>

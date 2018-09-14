@@ -136,38 +136,40 @@ if ($('#input_image_add_button').length != 0) {
 
                 // var blob = dataURLtoBlob(displaySrc);
 
-                var fd = new FormData();
-                fd.append('barcode', displaySrc);
+                // var fd = new FormData();
+                // fd.append('barcode', displaySrc);
 
-                $.ajax({
-                    type: 'POST',
-                    url: '/api/barcode',
-                    cache: false,
-                    data: fd,
-                    processData: false,
-                    contentType: false
-                }).done(function(data) {
-                    $.each(data.products, function(i, product) {
-                        $('#product_list').append('<li>' + '<strong>' + product.product_name + '</strong><br>' + product.brand + '<br>' + product.model_number + '<br>' + product.category.name + '<br>' + product.jan_code + '</li>');
-                    });
+                $('#barcode_base64').val(displaySrc);
+                $('#loading').hide();
+                // $.ajax({
+                //     type: 'POST',
+                //     url: '/api/barcode',
+                //     cache: false,
+                //     data: fd,
+                //     processData: false,
+                //     contentType: false
+                // }).done(function(data) {
+                //     $.each(data.products, function(i, product) {
+                //         $('#product_list').append('<li>' + '<strong>' + product.product_name + '</strong><br>' + product.brand + '<br>' + product.model_number + '<br>' + product.category.name + '<br>' + product.jan_code + '</li>');
+                //     });
 
-                }).fail(function(jqXHR) {
-                    if (jqXHR.status !== 404) {
-                        $('.header_status_text').text('通信エラー');
-                        $('.header_status').addClass('_show _error');
-                    } else {
-                        $('.barcode_status').append('<p>' + jqXHR.responseJSON.message + '</p>');
-                    }
+                // }).fail(function(jqXHR) {
+                //     if (jqXHR.status !== 404) {
+                //         $('.header_status_text').text('通信エラー');
+                //         $('.header_status').addClass('_show _error');
+                //     } else {
+                //         $('.barcode_status').append('<p>' + jqXHR.responseJSON.message + '</p>');
+                //     }
 
-                }).always(function() {
-                    $('input[name="barcode"]').val('');
-                    $('#loading').hide();
-                    setTimeout(function() {
-                        $('.barcode_status p').remove();
-                        $('.header_status_text').text('');
-                        $('.header_status').removeClass('_show _success _error');
-                    }, 2000);
-                });
+                // }).always(function() {
+                //     $('input[name="barcode"]').val('');
+                //     $('#loading').hide();
+                //     setTimeout(function() {
+                //         $('.barcode_status p').remove();
+                //         $('.header_status_text').text('');
+                //         $('.header_status').removeClass('_show _success _error');
+                //     }, 2000);
+                // });
             }
             img.src = data;
 
