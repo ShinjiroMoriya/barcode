@@ -563,15 +563,3 @@ label {
     border-radius: 5px;
     background: #6af;
 }
-.canvas {
-    width: 500px;
-    height: auto;
-    margin: 0 auto 20px auto;
-    display: block;
-}
-@media (max-width: 500px) {
-    .canvas {
-        width: 100%;
-        height: auto;
-    }
-}
