@@ -18,7 +18,7 @@ $.ajaxSetup({
             xhr.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
         }
     },
-    timeout : 30000
+    timeout : 15000
 });
 
 $('form').on('submit', function() {

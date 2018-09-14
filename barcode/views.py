@@ -45,5 +45,5 @@ class BarcodeReaderAPI(View):
             return JsonResponse({
                 'barcodes': [],
                 'products': [],
-                'message': 'DoesNotExist'
+                'message': str(e)
             })
