@@ -209,7 +209,7 @@ if ($('#input_image_add_button').length != 0) {
         alert('test');
 
         var fd = new FormData();
-        fd.append('barcode', blob);
+        fd.append('barcode', 'a');
         $.ajax({
             type: 'POST',
             url: '/api/barcode',
