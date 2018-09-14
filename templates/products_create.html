@@ -1,0 +1,98 @@
+{% extends "parts/layout.html" %}
+{% block body %}
+<div class="header_status"><p class="header_status_text"></p></div>
+<div class="container">
+    <main class="content">
+        <h2 class="page_title">商品 | 新規登録</h2>
+        {%- for mes in error_messages['product_name'] %}
+        {%- if mes == 'required' %}
+        <p class="error_text">商品名を入力してください。</p>
+        {%- endif %}
+        {%- if mes == 'invalid' %}
+        <p class="error_text">商品名を正しく入力してください。</p>
+        {%- endif %}
+        {%- endfor %}
+        {%- for mes in error_messages['brand'] %}
+        {%- if mes == 'required' %}
+        <p class="error_text">ブランドを入力してください。</p>
+        {%- endif %}
+        {%- if mes == 'invalid' %}
+        <p class="error_text">ブランドを正しく入力してください。</p>
+        {%- endif %}
+        {%- endfor %}
+        {%- for mes in error_messages['model_number'] %}
+        {%- if mes == 'required' %}
+        <p class="error_text">型番を入力してください。</p>
+        {%- endif %}
+        {%- if mes == 'invalid' %}
+        <p class="error_text">型番を正しく入力してください。</p>
+        {%- endif %}
+        {%- endfor %}
+        {%- for mes in error_messages['category'] %}
+        {%- if mes == 'required' %}
+        <p class="error_text">カテゴリーを選択してください。</p>
+        {%- endif %}
+        {%- if mes == 'invalid' %}
+        <p class="error_text">カテゴリーを正しく選択してください。</p>
+        {%- endif %}
+        {%- endfor %}
+        {%- for mes in error_messages['jan_code'] %}
+        {%- if mes == 'required' %}
+        <p class="error_text">JANコードを入力してください。</p>
+        {%- endif %}
+        {%- if mes == 'invalid' %}
+        <p class="error_text">JANコードを正しく入力してください。</p>
+        {%- endif %}
+        {%- endfor %}
+        <form method="POST">
+            <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+            <table class="table">
+                <tr>
+                    <th>商品名</th>
+                    <td>
+                        <input type="text" name="product_name" class="input_text" placeholder="入力してください" value="{% if form_data['product_name'] %}{{ form_data['product_name'] }}{% endif %}">
+                    </td>
+                </tr>
+                <tr>
+                    <th>ブランド</th>
+                    <td>
+                        <input type="text" name="brand" class="input_text" placeholder="入力してください" value="{% if form_data['brand'] %}{{ form_data['brand'] }}{% endif %}">
+                    </td>
+                </tr>
+                <tr>
+                    <th>型番</th>
+                    <td>
+                        <input type="text" name="model_number" class="input_text" placeholder="入力してください" value="{% if form_data['model_number'] %}{{ form_data['model_number'] }}{% endif %}">
+                    </td>
+                </tr>
+                <tr>
+                    <th>カテゴリー</th>
+                    <td>
+                        <select name="category" class="input_select">
+                            <option value="">選択してください</option>
+                            {%- for category in categories %}
+                            {%- if form_data['category'] == category.id %}
+                            <option value="{{ category.id }}" selected>{{ category.name }}</option>
+                            {%- else %}
+                            <option value="{{ category.id }}">{{ category.name }}</option>
+                            {%- endif %}
+                            {%- endfor %}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>JANコード</th>
+                    <td>
+                        <input type="text" name="jan_code" class="input_text" placeholder="入力してください" value="{% if form_data['jan_code'] %}{{ form_data['jan_code'] }}{% endif %}">
+                    </td>
+                </tr>
+            </table>
+            <div class="button_wrap">
+                <input type="submit" value="保存" class="button_1">
+            </div>
+        </form>
+    </main>
+</div>
+{% endblock %}
+{% block javascript %}
+{% endblock %}

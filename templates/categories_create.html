@@ -1,0 +1,33 @@
+{% extends "parts/layout.html" %}
+{% block body %}
+<div class="header_status"><p class="header_status_text"></p></div>
+<div class="container">
+    <main class="content">
+        <h2 class="page_title">商品カテゴリー | 新規登録</h2>
+        {%- for mes in error_messages['name'] %}
+        {%- if mes == 'required' %}
+        <p class="error_text">名称を入力してください。</p>
+        {%- endif %}
+        {%- if mes == 'invalid' %}
+        <p class="error_text">名称を正しく入力してください。</p>
+        {%- endif %}
+        {%- endfor %}
+        <form method="POST">
+            <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+            <table class="table">
+                <tr>
+                    <th>名称</th>
+                    <td>
+                        <input type="text" name="name" class="input_text" placeholder="入力してください" value="{% if form_data['name'] %}{{ form_data['name'] }}{% endif %}">
+                    </td>
+                </tr>
+            </table>
+            <div class="button_wrap">
+                <input type="submit" value="保存" class="button_1">
+            </div>
+        </form>
+    </main>
+</div>
+{% endblock %}
+{% block javascript %}
+{% endblock %}

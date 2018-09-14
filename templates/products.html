@@ -1,0 +1,28 @@
+{% extends "parts/layout.html" %}
+{% block body %}
+<div class="header_status"><p class="header_status_text"></p></div>
+<div class="container">
+    <main class="content">
+        <h2 class="page_title">商品</h2>
+        <p class="link_button _space">
+            <a href="/admin/products/create" class="a_link">新規登録</a>
+        </p>
+        <div class="table_content">
+            <table class="table">
+                <tr>
+                    <td>商品名</td>
+                    <td>JANコード</td>
+                </tr>
+                {%- for product in products %}
+                <tr>
+                    <td><a href="/admin/products/{{ product.id }}" class="a_link">{{ product.product_name }}</a></td>
+                    <td>{{ product.jan_code }}</td>
+                </tr>
+                {%- endfor %}
+            </table>
+        </div>
+    </main>
+</div>
+{% endblock %}
+{% block javascript %}
+{% endblock %}

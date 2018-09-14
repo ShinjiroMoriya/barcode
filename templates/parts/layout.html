@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <title>バーコード</title>
+	{% block style %}{% endblock %}
+    <link rel="shortcut icon" type="image/x-icon" href="/assets/img/favicon.ico">
+    <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+    <header class="header">
+        <h1 class="header_title"><a href="/">バーコード読取</a></h1>
+        <div class="header_menu_button">
+            <a href="javascript:;">
+                <svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <rect style="fill: #fff;" y="9" width="20" height="2"></rect>
+                    <rect style="fill: #fff;" y="3" width="20" height="2"></rect>
+                    <rect style="fill: #fff;" y="15" width="20" height="2"></rect>
+                </svg>
+            </a>
+        </div>
+	</header>
+    <aside id="menu" class="side_nav">
+        <ul class="side_nav_list">
+            <li><a href="/">トップ</a></li>
+            <li><a href="/admin/products" {% if request.path.split('/')[2] == 'products' %}class="a_link"{% endif %}>商品</a></li>
+            <li><a href="/admin/categories" {% if request.path.split('/')[2] == 'categories' %}class="a_link"{% endif %}>カテゴリー</a></li>
+        </ul>
+    </aside>
+    {% block body %}{% endblock %}
+    <script src="/assets/js/jquery.js"></script>
+    {% block javascript %}{% endblock %}
+    <script src="/assets/js/script.js"></script>
+</body>
+</html>

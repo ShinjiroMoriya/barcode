@@ -1,0 +1,21 @@
+{
+  "name": "Barcode App",
+  "description": "Barcode App",
+  "keywords": [],
+  "addons": [
+    "heroku-postgresql:hobby-dev"
+  ],
+  "env": {
+    "SECRET_KEY": {
+      "required": true
+    }
+  },
+  "buildpacks": [
+    {
+      "url": "https://github.com/heroku/heroku-buildpack-apt"
+    },
+    {
+      "url": "heroku/python"
+    }
+  ]
+}
