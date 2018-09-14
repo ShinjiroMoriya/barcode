@@ -42,7 +42,7 @@ if ($('#input_image_add_button').length != 0) {
     $('#input_image_add_button').on('click', function() {
         $('#upload').click();
     });
-    $('#upload').on('change', function(event) {
+    $('#upload').off('change').on('change', function(event) {
 
         $('#loading').show();
 
@@ -135,10 +135,8 @@ if ($('#input_image_add_button').length != 0) {
                 var displaySrc = ctx.canvas.toDataURL('image/jpeg', .9);
 
                 var blob = dataURLtoBlob(displaySrc);
-
                 var fd = new FormData();
                 fd.append('barcode', blob);
-
                 $.ajax({
                     type: 'POST',
                     url: '/api/barcode',
