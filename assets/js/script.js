@@ -144,6 +144,7 @@ if ($('#input_image_add_button').length != 0) {
                     url: '/api/barcode',
                     cache: false,
                     data: fd,
+                    timeout: 15000,
                     processData: false,
                     contentType: false
                 }).done(function(data) {
