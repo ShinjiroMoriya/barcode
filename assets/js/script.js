@@ -362,3 +362,20 @@ function transformCoordinate(canvas, width, height, orientation) {
             break;
     }
 }
+
+$('#csv_input').on('change', function(event) {
+    $('#csv_upload').off('submit');
+    $('#csv_upload').on('submit', function(e) {
+
+        var file = event.target.files[0];
+        if (!file.type.match(/^text\/csv$/)) {
+            e.stopPropagation();
+            e.preventDefault();
+            alert('csvファイルを選択してください。')
+        };
+
+    });
+
+    $('#csv_upload').trigger('submit');
+
+});

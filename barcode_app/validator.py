@@ -4,4 +4,5 @@ ERROR_MESSAGES = {
     'max_length': 'max_length',
     'invalid': 'invalid',
     'invalid_choice': 'invalid_choice',
+    'invalid_extension': 'invalid_extension',
 }

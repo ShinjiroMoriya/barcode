@@ -16,6 +16,10 @@ class ProductCategory(models.Model):
         return cls.objects.filter(id=category_id).first()
 
     @classmethod
+    def get_by_name(cls, category_name):
+        return cls.objects.filter(name=category_name).first()
+
+    @classmethod
     def create_category(cls, data):
         return cls.objects.create(**data)
 
@@ -46,6 +50,10 @@ class Product(models.Model):
     @classmethod
     def get_by_id(cls, product_id):
         return cls.objects.filter(id=product_id).select_related().first()
+
+    @classmethod
+    def get_by_jan_code(cls, jan_code):
+        return cls.objects.filter(jan_code=jan_code).first()
 
     @classmethod
     def get_by_ids(cls, product_ids):

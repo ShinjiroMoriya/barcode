@@ -1,10 +1,12 @@
 from django.views import View
-from product.forms import ProductForm, CategoryForm
+from product.forms import ProductForm, CategoryForm, CSVUploadForm
 from django.http import HttpResponseRedirect
 from django.template.response import TemplateResponse
 from django.contrib import messages
 from barcode_app.services import get_error_message
 from product.models import Product, ProductCategory
+from io import TextIOWrapper
+import csv
 
 
 class ProductsView(View):
@@ -13,7 +15,46 @@ class ProductsView(View):
         products = Product.get_all()
         return TemplateResponse(request, 'products.html', {
             'products': products,
+            'error_messages': {}
         })
+
+    @staticmethod
+    def post(request):
+
+        form = CSVUploadForm(request.POST, request.FILES)
+
+        if form.errors:
+            messages.add_message(request, messages.INFO,
+                                 dict(form.errors.items()))
+
+        if form.is_valid():
+
+            form_data = TextIOWrapper(form.cleaned_data.get('csv'), encoding='utf-8')
+            try:
+                csv_file = csv.reader(form_data)
+                next(csv_file)
+                add_product = []
+                for c in csv_file:
+                    already_product = Product.get_by_jan_code(c[4])
+                    if already_product is None:
+                        add_product.append(Product(
+                            product_name=c[1],
+                            brand=c[0],
+                            model_number=c[2],
+                            category=ProductCategory.get_by_name(c[3]),
+                            jan_code=c[4],
+                        ))
+
+                Product.objects.bulk_create(add_product)
+
+            except:
+                products = Product.get_all()
+                return TemplateResponse(request, 'products.html', {
+                    'products': products,
+                    'error_messages': get_error_message(request),
+                })
+
+        return HttpResponseRedirect('/admin/products')
 
 
 class ProductsCreateView(View):

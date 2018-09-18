@@ -1,4 +1,5 @@
 from django import forms
+from django.core.validators import FileExtensionValidator
 from barcode_app.validator import ERROR_MESSAGES
 from product.models import ProductCategory
 
@@ -22,3 +23,9 @@ class ProductForm(forms.Form):
 class CategoryForm(forms.Form):
     name = forms.CharField(required=True,
                            error_messages=ERROR_MESSAGES, )
+
+
+class CSVUploadForm(forms.Form):
+    csv = forms.FileField(
+        error_messages=ERROR_MESSAGES,
+        validators=[FileExtensionValidator(['csv'])])

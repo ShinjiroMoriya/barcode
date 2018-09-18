@@ -4,9 +4,24 @@
 <div class="container">
     <main class="content">
         <h2 class="page_title">商品</h2>
+        {%- for mes in error_messages['csv'] %}
+        {%- if mes == 'required' %}
+        <p class="error_text">CSVを選択してください。</p>
+        {%- endif %}
+        {%- if mes == 'invalid_extension' %}
+        <p class="error_text">CSVファイルを選択してください。</p>
+        {%- endif %}
+        {%- endfor %}
         <p class="link_button _space">
             <a href="/admin/products/create" class="a_link">新規登録</a>
         </p>
+        <form id="csv_upload" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+            <label>
+                <span class="button_1" style="margin: 0 0 0px 0;">CSVを選択する</span>
+                <input type="file" id="csv_input" name="csv" style="display:none">
+            </label>
+        </form>
         <div class="table_content">
             <table class="table">
                 <tr>
