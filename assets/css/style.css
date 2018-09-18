@@ -162,6 +162,7 @@ label {
     border-left: 1px solid #ddd;
     background: #fff;
     transition: right 0.3s;
+    z-index: 888;
 }
 .side_nav._open {
     right: 0;
