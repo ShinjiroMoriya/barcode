@@ -137,8 +137,7 @@ if ($('#input_image_add_button').length != 0) {
                     }
                     ctx.restore();
                     tmpCanvas = tmpCtx = null;
-
-                    var displaySrc = ctx.canvas.toDataURL('image/jpeg', .9);
+                    var displaySrc = ctx.canvas.toDataURL('image/jpeg', .4);
                     var fd = new FormData();
                     fd.append('barcode_base64', displaySrc);
 
